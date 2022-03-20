@@ -1,18 +1,19 @@
-import '../styles/globals.css'
-import { ChakraProvider } from "@chakra-ui/react"
-import { Provider } from "react-redux"
-import Navbar from "../component/Navbar"
+import "../styles/globals.css";
+import { ChakraProvider } from "@chakra-ui/react";
+import { Provider } from "react-redux";
+import Navbar from "../component/Navbar";
+import Footer from "../component/Footer";
 
 function MyApp({ Component, pageProps }) {
   return (
-  // <Provider>
+    // <Provider>
     <ChakraProvider>
       <Navbar />
-    <Component {...pageProps} />
+      <Component {...pageProps} />
+      <Footer />
     </ChakraProvider>
-  // </Provider>
-  )
-  
+    // </Provider>
+  );
 }
 
-export default MyApp
+export default MyApp;
