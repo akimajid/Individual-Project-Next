@@ -26,7 +26,6 @@ import { userLogin } from "../../redux/actions/auth";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -47,11 +46,9 @@ const Login = () => {
     }),
     validateOnChange: false,
     onSubmit: async (values) => {
-      setLoading(true);
-
-      dispatch(userLogin(values));
-
-      setLoading(false);
+      setTimeout(() => {
+        dispatch(userLogin(values, formik.setSubmitting))
+      }, 2000)
     },
   });
 
@@ -146,7 +143,7 @@ const Login = () => {
               <Button
                 onClick={formik.handleSubmit}
                 type="submit"
-                disabled={loading}
+                disabled={formik.isSubmitting}
                 fontFamily="heading"
                 bg="gray.200"
                 color="white"

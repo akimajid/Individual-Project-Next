@@ -2,7 +2,7 @@ import jsCookie from "js-cookie";
 import api from "../../lib/api"
 import { auth_types } from "../types/auth";
 
-export const userLogin = (values) => {
+export const userLogin = (values, setSubmitting) => {
     return async (dispatch) => {
         try {
             const res = await api.get("/users", {
@@ -28,6 +28,7 @@ export const userLogin = (values) => {
                 type: auth_types.LOGIN_USER,
                 payload: userData
             })
+            setSubmitting(false)
         } catch (err) {
             console.log(err)
 
