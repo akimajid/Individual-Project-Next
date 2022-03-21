@@ -14,20 +14,23 @@ import {
   FormHelperText,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
 import api from "../../lib/api";
 import jsCookie from "js-cookie";
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux";
 import { auth_types } from "../../redux/types/auth";
+import { userLogin } from "../../redux/actions/auth";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  const authSelector = useSelector((state) => state.auth);
 
   const router = useRouter();
 
@@ -46,47 +49,22 @@ const Login = () => {
     onSubmit: async (values) => {
       setLoading(true);
 
-      try {
-        const res = await api.get("/users", {
-          params: {
-            username: values.username,
-          },
-        });
+      dispatch(userLogin(values));
 
-        if (!res.data.length) {
-          throw new Error("user not found");
-        }
-
-        if (res.data[0].password !== values.password) {
-          throw new Error("Wrong password!");
-        }
-
-        const userData = res.data[0];
-        const stringifieldUsedData = JSON.stringify(userData);
-
-        jsCookie.set("user_data", stringifieldUsedData);
-
-        dispatch({
-          type: auth_types.LOGIN_USER,
-          payload: userData,
-        })
-
-        router.push("/");
-      } catch (err) {
-        console.log(err);
-
-        toast({
-          position: "top",
-          status: "error",
-          title: "Login failed",
-          description: err.message,
-          duration: 2000,
-        });
-
-        setLoading(false);
-      }
+      setLoading(false);
     },
   });
+
+  useEffect(() => {
+    if (authSelector.errorMsg) {
+      toast({
+        position: "top",
+        status: "error",
+        title: "Login failed!",
+        description: authSelector.errorMsg
+      })
+    }
+  }, [authSelector.errorMsg])
 
   return (
     <Center bgGradient="linear(to-r, gray.200, gray.400)" position="flex">
@@ -106,6 +84,7 @@ const Login = () => {
               >
                 !
               </Text>
+              <Text >User Login: {authSelector.username}</Text>
             </Heading>
             <Text color="gray.500" fontSize={{ base: "sm", sm: "md" }}>
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
