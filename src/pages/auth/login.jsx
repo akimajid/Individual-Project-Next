@@ -20,10 +20,14 @@ import * as Yup from "yup";
 import { useRouter } from "next/router";
 import api from "../../lib/api";
 import jsCookie from "js-cookie";
+import { useDispatch } from "react-redux"
+import { auth_types } from "../../redux/types/auth";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch()
 
   const router = useRouter();
 
@@ -61,6 +65,11 @@ const Login = () => {
         const stringifieldUsedData = JSON.stringify(userData);
 
         jsCookie.set("user_data", stringifieldUsedData);
+
+        dispatch({
+          type: auth_types.LOGIN_USER,
+          payload: userData,
+        })
 
         router.push("/");
       } catch (err) {
