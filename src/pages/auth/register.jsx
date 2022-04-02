@@ -11,6 +11,7 @@ import {
     return (
       <Box bgGradient="linear(to-r, gray.200, gray.400)" position="flex">
         <Container
+          height="full"
           as={SimpleGrid}
           maxW="7xl"
           columns={{ base: 1, md: 2 }}

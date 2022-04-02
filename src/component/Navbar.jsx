@@ -19,10 +19,11 @@ import {
         bgColor="gray.200" 
         px={5}
         position="-webkit-sticky"
+        py="1.5"
         >
         <Flex h={10} alignItems="center" justifyContent="space-between">
             <HStack  spacing={0} alignItems="center">
-                <Icon marginRight="8" boxSize={4} as={SiConfluence}></Icon>
+                <Icon marginRight="8" boxSize={5} as={SiConfluence}></Icon>
                 <Box
                 color="black"
                 as={Button}

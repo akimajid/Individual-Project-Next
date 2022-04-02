@@ -13,8 +13,8 @@ import {
   const Footer = () => {
     return (
       <>
-        <Center margin="4" justifyContent="space-between">
-          <Flex>
+        <Center paddingY="1.5" bgColor="gray.200" justifyContent="space-between">
+          <Flex marginLeft="2">
             <Icon boxSize="6" as={SiConfluence} />
             <Text fontSize="large" fontWeight="bold" marginX="2">
               logoipsum
