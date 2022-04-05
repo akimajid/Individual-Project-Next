@@ -47,8 +47,8 @@ const Login = () => {
     validateOnChange: false,
     onSubmit: async (values) => {
       setTimeout(() => {
-        dispatch(userLogin(values, formik.setSubmitting))
-      }, 2000)
+        dispatch(userLogin(values, formik.setSubmitting));
+      }, 2000);
     },
   });
 
@@ -58,10 +58,10 @@ const Login = () => {
         position: "top",
         status: "error",
         title: "Login failed!",
-        description: authSelector.errorMsg
-      })
+        description: authSelector.errorMsg,
+      });
     }
-  }, [authSelector.errorMsg])
+  }, [authSelector.errorMsg]);
 
   return (
     <Center bgGradient="linear(to-r, gray.200, gray.400)" position="flex">
@@ -81,7 +81,7 @@ const Login = () => {
               >
                 !
               </Text>
-              <Text >User Login: {authSelector.username}</Text>
+              <Text>User Login: {authSelector.username}</Text>
             </Heading>
             <Text color="gray.500" fontSize={{ base: "sm", sm: "md" }}>
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
