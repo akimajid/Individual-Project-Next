@@ -1,41 +1,35 @@
 import jsCookie from "js-cookie";
 import api from "../../lib/api"
-import { auth_types } from "../types/auth";
+import { auth_types, network_type } from "../types";
 
 export const userLogin = (values, setSubmitting) => {
     return async (dispatch) => {
         try {
-            const res = await api.get("/users", {
-                params: {
-                    username: values.username
-                }
+            const res = await api.post("/auth/login", {
+                username: values.username,
+                password: values.password
             })
 
-            if (!res.data.length) {
-                throw new Error("User not found")
-            }
+            const userResponse = res.data.result
 
-            if (res.data[0].password !== values.password) {
-                throw new Error("Wrong password!")
-            }
-
-            const userData = res.data[0]
-            const stringifieldUserData = JSON.stringify.userData
-
-            jsCookie.set("user_data", stringifieldUserData)
+            jsCookie.set("auth_token", userResponse.token)
 
             dispatch({
                 type: auth_types.LOGIN_USER,
-                payload: userData
+                payload: userResponse.user
             })
             setSubmitting(false)
         } catch (err) {
             console.log(err)
 
             dispatch({
-                type: auth_types.AUTH_ERROR,
-                payload: err.message
+                type: network_type.NETWORK_ERROR,
+                payload: {
+                    title: "Login failed",
+                    description: err.message
+                }
             })
+            setSubmitting(false)
         }
     }
 }

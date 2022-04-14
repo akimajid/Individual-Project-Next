@@ -9,12 +9,15 @@ import {
   MenuList,
   MenuItem,
   Icon,
-  Input,
   Link,
+  Text
 } from "@chakra-ui/react";
 import { SiConfluence } from "react-icons/si";
+import { useSelector } from "react-redux";
 
 const NavBarItem = () => {
+  const authSelector = useSelector((state) => state.auth)
+
   return (
     <Box bgColor="gray.200" px={5} position="-webkit-sticky" py="1.5">
       <Flex h={10} alignItems="center" justifyContent="space-between">
@@ -61,6 +64,7 @@ const NavBarItem = () => {
           </Box>
         </HStack>
         <Flex alignItems="center">
+          <Text>{authSelector.username}</Text>
           <Menu>
             <MenuButton as={Button} variant="flex" cursor="pointer" minW={0}>
               <Avatar

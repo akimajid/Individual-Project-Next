@@ -45,7 +45,7 @@ const Login = () => {
       password: Yup.string().required("This field is required!"),
     }),
     validateOnChange: false,
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       setTimeout(() => {
         dispatch(userLogin(values, formik.setSubmitting));
       }, 2000);
@@ -53,15 +53,10 @@ const Login = () => {
   });
 
   useEffect(() => {
-    if (authSelector.errorMsg) {
-      toast({
-        position: "top",
-        status: "error",
-        title: "Login failed!",
-        description: authSelector.errorMsg,
-      });
+    if (authSelector.id) {
+      router.push("/posts");
     }
-  }, [authSelector.errorMsg]);
+  }, [authSelector.id]);
 
   return (
     <Center bgGradient="linear(to-r, gray.200, gray.400)" position="flex">
