@@ -10,7 +10,7 @@ import {
 import { FaRegHeart, FaRegComment } from "react-icons/fa";
 
 const ContentCard = (props) => {
-  const { username, location, caption, like_count, image_url, id, User } =
+  const { username, location, caption, like_count, image_url, user_post } =
     props;
 
   return (
@@ -26,7 +26,7 @@ const ContentCard = (props) => {
         <Avatar src="https://bit.ly/dan-abramov" size="md" />
         <Box marginLeft="2">
           <Text fontWeight="bold" fontSize="sm">
-            {User?.username}
+            {user_post?.username}
           </Text>
           <Text fontSize="sm" color="GrayText">
             {location}
@@ -38,7 +38,7 @@ const ContentCard = (props) => {
         <Image padding="1" src={image_url} />
       </AspectRatio>
 
-      <Box paddingX="2">
+      <Box marginTop="2">
         <Icon boxSize={6} as={FaRegHeart} />
         <Icon
           marginLeft="4"
@@ -60,7 +60,7 @@ const ContentCard = (props) => {
 
       <Box paddingX="2">
         <Text display="inline" fontWeight="bold" marginRight="2">
-          {username}
+          {user_post?.username}
         </Text>
         <Text display="inline">{caption}</Text>
       </Box>

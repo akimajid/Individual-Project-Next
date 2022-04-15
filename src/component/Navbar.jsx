@@ -64,7 +64,7 @@ const NavBarItem = () => {
           </Box>
         </HStack>
         <Flex alignItems="center">
-          <Text>{authSelector.username}</Text>
+          <Text>{`Hi, ${authSelector.username}`}</Text>
           <Menu>
             <MenuButton as={Button} variant="flex" cursor="pointer" minW={0}>
               <Avatar

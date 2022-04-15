@@ -37,7 +37,7 @@ const PostsPage = ({ postDetailData, webUrl }) => {
 export async function getServerSideProps(context) {
     const postId = context.params.id
 
-    const res = await axios.get("http://localhost:2000/posts/" + postId)
+    const res = await axios.get("http://localhost:2020/posts/" + postId)
 
     return {
         props: {

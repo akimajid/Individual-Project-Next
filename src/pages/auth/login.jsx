@@ -59,14 +59,15 @@ const Login = () => {
   }, [authSelector.id]);
 
   return (
-    <Center bgGradient="linear(to-r, gray.200, gray.400)" position="flex">
-      <Box width="xl" margin="28">
-        <Stack bg="gray.50" rounded="xl" p={{ base: 4, sm: 6, md: 8 }}>
+    <Center  bgGradient="linear(to-r, gray.200, gray.400)" position="flex">
+      <Box width="md" margin="28">
+        <Stack spacing="4" bg="gray.50" rounded="xl" p={{ base: 4, sm: 6, md: 8 }}>
           <Stack spacing="4" marginBottom={8}>
             <Heading
               color="gray.800"
               lineHeight={1.1}
-              fontSize={{ base: "2xl", sm: "3xl", md: "4xl" }}
+              fontSize="3xl"
+              textAlign="center"
             >
               <Text as="span">Sign in to your account </Text>
               <Text
@@ -76,16 +77,12 @@ const Login = () => {
               >
                 !
               </Text>
-              <Text>User Login: {authSelector.username}</Text>
             </Heading>
-            <Text color="gray.500" fontSize={{ base: "sm", sm: "md" }}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Voluptatibus, sequi in? Autem, adipisci eos perferendis
-              accusantium odit cumque. Autem culpa molestias reiciendis id odit
-              quia.
+            <Text textAlign="center" color="gray.500" fontSize={{ base: "sm", sm: "md" }}>
+              Sign in to enjoy our full featured content
             </Text>
           </Stack>
-          <Box as="form" mt={10}>
+          <Box as="form" >
             <Stack spacing={4}>
               <FormControl isInvalid={formik.errors.username}>
                 <Input

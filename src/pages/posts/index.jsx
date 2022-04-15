@@ -4,16 +4,6 @@ import ContentCard from "../../component/ContentCard";
 import axiosInstance from "../../lib/api";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-const postData = {
-  userId: 1,
-  location: "BSD",
-  imageUrl: "http://placeimg.com/640/480",
-  numberOfLikes: 12345,
-  caption: "Balanced bottom-line adapter",
-  user_id: 1,
-  username: "Seto",
-};
-
 const PostsPage = () => {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
