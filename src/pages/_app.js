@@ -6,6 +6,8 @@ import Footer from "../component/Footer";
 import rootReducer from "../redux/store";
 import thunk from "redux-thunk";
 import { createStore, applyMiddleware } from "redux";
+import AuthProvider from "../component/AuthProvider";
+import NetworkMessageWrapper from "../component/networkMessageWrapper";
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
@@ -13,9 +15,13 @@ function MyApp({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <ChakraProvider>
-        <Navbar />
-        <Component {...pageProps} />
-        <Footer />
+        <NetworkMessageWrapper>
+        <AuthProvider>
+          <Navbar />
+          <Component {...pageProps} />
+          <Footer />
+        </AuthProvider>
+        </NetworkMessageWrapper>
       </ChakraProvider>
     </Provider>
   );

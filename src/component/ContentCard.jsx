@@ -18,7 +18,7 @@ const ContentCard = (props) => {
       bg="white"
       borderWidth="1px"
       borderRadius="lg"
-      maxW="3xl"
+      maxW="2xl"
       paddingY="4"
       marginY="8"
     >

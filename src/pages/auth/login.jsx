@@ -59,9 +59,14 @@ const Login = () => {
   }, [authSelector.id]);
 
   return (
-    <Center  bgGradient="linear(to-r, gray.200, gray.400)" position="flex">
+    <Center bgGradient="linear(to-r, gray.200, gray.400)" position="flex">
       <Box width="md" margin="28">
-        <Stack spacing="4" bg="gray.50" rounded="xl" p={{ base: 4, sm: 6, md: 8 }}>
+        <Stack
+          spacing="4"
+          bg="gray.50"
+          rounded="xl"
+          p={{ base: 4, sm: 6, md: 8 }}
+        >
           <Stack spacing="4" marginBottom={8}>
             <Heading
               color="gray.800"
@@ -78,11 +83,15 @@ const Login = () => {
                 !
               </Text>
             </Heading>
-            <Text textAlign="center" color="gray.500" fontSize={{ base: "sm", sm: "md" }}>
+            <Text
+              textAlign="center"
+              color="gray.500"
+              fontSize={{ base: "sm", sm: "md" }}
+            >
               Sign in to enjoy our full featured content
             </Text>
           </Stack>
-          <Box as="form" >
+          <Box as="form">
             <Stack spacing={4}>
               <FormControl isInvalid={formik.errors.username}>
                 <Input
@@ -132,6 +141,7 @@ const Login = () => {
                   Sign Up here
                 </Link>
               </Text>
+              <Link textAlign="center" color="blue.300">Forget password?</Link>
               <Button
                 onClick={formik.handleSubmit}
                 type="submit"

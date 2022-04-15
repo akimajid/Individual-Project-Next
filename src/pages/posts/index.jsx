@@ -1,4 +1,4 @@
-import { Box, Center, Spinner, Stack } from "@chakra-ui/react";
+import { Box, Center, Spinner } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import ContentCard from "../../component/ContentCard";
 import axiosInstance from "../../lib/api";

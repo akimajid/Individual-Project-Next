@@ -10,13 +10,27 @@ import {
   MenuItem,
   Icon,
   Link,
-  Text
+  Text,
 } from "@chakra-ui/react";
+import jsCookie from "js-cookie";
 import { SiConfluence } from "react-icons/si";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { auth_types } from "../redux/types";
+import { useRouter } from "next/router"
 
 const NavBarItem = () => {
-  const authSelector = useSelector((state) => state.auth)
+  const authSelector = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const router = useRouter()
+
+  const logoutBtnHandler = () => {
+    dispatch({
+      type: auth_types.LOGOUT_USER,
+    });
+
+    jsCookie.remove("auth_token");
+    router.push("/auth/login")
+  };
 
   return (
     <Box bgColor="gray.200" px={5} position="-webkit-sticky" py="1.5">
@@ -77,7 +91,7 @@ const NavBarItem = () => {
                 <Link href="/profile">Profile</Link>
               </MenuItem>
               <MenuItem>Link 2</MenuItem>
-              <MenuItem>Link 3</MenuItem>
+              <MenuItem onClick={logoutBtnHandler}>Log Out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
