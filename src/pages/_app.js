@@ -17,7 +17,6 @@ function MyApp({ Component, pageProps }) {
       <ChakraProvider>
         <NetworkMessageWrapper>
         <AuthProvider>
-          <Navbar />
           <Component {...pageProps} />
           <Footer />
         </AuthProvider>

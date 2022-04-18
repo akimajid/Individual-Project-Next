@@ -18,15 +18,14 @@ import { useRouter } from "next/router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../src/lib/api";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { userRegister } from "../redux/actions/auth";
 
 const RightSectionRegister = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
-  const authSelector = useSelector((state) => state.auth);
-  const router = useRouter;
-  const toast = useToast;
+  const router = useRouter();
 
   const formik = useFormik({
     initialValues: {
@@ -52,37 +51,15 @@ const RightSectionRegister = () => {
     }),
     validateOnChange: false,
     onSubmit: (values) => {
-      setTimeout(async () => {
-        try {
-          if (values.password != values.repeat_password) {
-            throw new Error("password not match");
-          }
-          return await api.post("/auth/register", values);
-        } catch (err) {
-          console.log(err);
-          toast({
-            position: "top",
-            title: "error",
-            description: err.message,
-            status: "error",
-          });
-        }
-      }, 2000);
-      formik.setSubmitting(false);
+      if (values.password === values.repeat_password) {
+        delete values.repeat_password
+
+        api.post("/auth/register", values)
+        router.push("/auth/login")
+      }
     },
   });
-
-  const inputHandler = (event) => {
-    const { value, name } = event.target;
-    formik.setFieldValue(name, value);
-  };
-
-  useEffect(() => {
-    if (authSelector.id) {
-      router.push("/");
-    }
-  }, [authSelector.id]);
-
+  
   return (
     <Stack bg="gray.50" rounded="xl" p={{ base: 4, sm: 6, md: 8 }}>
       <Stack spacing="4" marginBottom={8}>
@@ -113,7 +90,9 @@ const RightSectionRegister = () => {
         <Stack spacing={4}>
           <FormControl isInvalid={formik.errors.username}>
             <Input
-              onChange={inputHandler}
+              onChange={(event) =>
+                formik.setFieldValue("username", event.target.value)
+              }
               placeholder="User Name"
               bg="gray.100"
               border={0}
@@ -127,6 +106,9 @@ const RightSectionRegister = () => {
 
           <FormControl isInvalid={formik.errors.email}>
             <Input
+              onChange={(event) =>
+                formik.setFieldValue("email", event.target.value)
+              }
               placeholder="Email Address"
               bg="gray.100"
               border={0}
@@ -140,6 +122,9 @@ const RightSectionRegister = () => {
 
           <FormControl isInvalid={formik.errors.full_name}>
             <Input
+              onChange={(event) =>
+                formik.setFieldValue("full_name", event.target.value)
+              }
               placeholder="Full name"
               bg="gray.100"
               border={0}
@@ -154,7 +139,9 @@ const RightSectionRegister = () => {
           <FormControl isInvalid={formik.errors.password}>
             <InputGroup>
               <Input
-                onChange={inputHandler}
+                onChange={(event) =>
+                  formik.setFieldValue("password", event.target.value)
+                }
                 placeholder="Password"
                 bg="gray.100"
                 type={showPassword ? "text" : "password"}
@@ -180,7 +167,9 @@ const RightSectionRegister = () => {
           <FormControl isInvalid={formik.errors.repeat_password}>
             <InputGroup>
               <Input
-                onChange={inputHandler}
+                onChange={(event) =>
+                  formik.setFieldValue("repeat_password", event.target.value)
+                }
                 placeholder="Repeat password"
                 bg="gray.100"
                 type={showRepeatPassword ? "text" : "password"}

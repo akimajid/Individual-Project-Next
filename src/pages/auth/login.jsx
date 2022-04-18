@@ -88,6 +88,7 @@ const Login = () => {
               Sign in to enjoy our full featured content
             </Text>
           </Stack>
+
           <Box as="form">
             <Stack spacing={4}>
               <FormControl isInvalid={formik.errors.username}>
@@ -105,6 +106,7 @@ const Login = () => {
                 />
                 <FormHelperText>{formik.errors.username}</FormHelperText>
               </FormControl>
+
               <FormControl isInvalid={formik.errors.password}>
                 <InputGroup>
                   <Input
@@ -132,13 +134,18 @@ const Login = () => {
                 </InputGroup>
                 <FormHelperText>{formik.errors.password}</FormHelperText>
               </FormControl>
+
               <Text as="span" textAlign="center">
                 <Text as="span">Don't have an account ? </Text>
                 <Link href="/auth/register" color="blue.300">
                   Sign Up here
                 </Link>
               </Text>
-              <Link textAlign="center" color="blue.300">Forget password?</Link>
+
+              <Link textAlign="center" color="blue.300">
+                Forget password?
+              </Link>
+
               <Button
                 onClick={formik.handleSubmit}
                 type="submit"

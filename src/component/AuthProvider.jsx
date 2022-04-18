@@ -3,6 +3,7 @@ import { auth_types } from "../redux/types";
 import { useEffect, useState } from "react";
 import jsCookie from "js-cookie";
 import axiosInstance from "../lib/api";
+import Navbar from "./Navbar"
 
 const AuthProvider = ({ children }) => {
   const dispatch = useDispatch();
@@ -25,7 +26,13 @@ const AuthProvider = ({ children }) => {
       }
     }
   }, []);
-  return children;
+
+  return (
+    <>
+      <Navbar />
+      {children}
+    </>
+  )
 };
 
 export default AuthProvider;
