@@ -16,12 +16,12 @@ import jsCookie from "js-cookie";
 import { SiConfluence } from "react-icons/si";
 import { useDispatch, useSelector } from "react-redux";
 import { auth_types } from "../redux/types";
-import { useRouter } from "next/router"
+import { useRouter } from "next/router";
 
 const NavBarItem = () => {
   const authSelector = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const router = useRouter()
+  const router = useRouter();
 
   const logoutBtnHandler = () => {
     dispatch({
@@ -29,7 +29,7 @@ const NavBarItem = () => {
     });
 
     jsCookie.remove("auth_token");
-    router.push("/auth/login")
+    router.push("/auth/login");
   };
 
   return (
@@ -50,32 +50,6 @@ const NavBarItem = () => {
           >
             <Link href="/posts">Home</Link>
           </Box>
-          <Box
-            color="black"
-            as={Button}
-            variant="flex"
-            cursor="pointer"
-            minW={0}
-            fontWeight="900px"
-            _hover={{
-              background: "gray.300",
-            }}
-          >
-            Explore
-          </Box>
-          <Box
-            color="black"
-            as={Button}
-            variant="flex"
-            cursor="pointer"
-            minW={0}
-            fontWeight="900px"
-            _hover={{
-              background: "gray.300",
-            }}
-          >
-            Menu3
-          </Box>
         </HStack>
         <Flex alignItems="center">
           <Text>{`Hi, ${authSelector.username}`}</Text>
@@ -90,7 +64,7 @@ const NavBarItem = () => {
               <MenuItem>
                 <Link href="/profile">Profile</Link>
               </MenuItem>
-              <MenuItem>Link 2</MenuItem>
+              <MenuItem>Create post</MenuItem>
               <MenuItem onClick={logoutBtnHandler}>Log Out</MenuItem>
             </MenuList>
           </Menu>

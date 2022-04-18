@@ -24,4 +24,4 @@ const Page = ({ children, title, description, url, type, image }) => {
   );
 };
 
-export default Page
+export default Page;

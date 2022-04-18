@@ -12,11 +12,8 @@ export const userLogin = (values, setSubmitting) => {
 
       const userResponse = res.data.result;
 
-      const stringifyData = JSON.stringify(userResponse.user);
-
       jsCookie.set("auth_token", userResponse.token);
-      jsCookie.set("user_data", stringifyData);
-
+      
       dispatch({
         type: auth_types.LOGIN_USER,
         payload: userResponse.user,
@@ -24,7 +21,6 @@ export const userLogin = (values, setSubmitting) => {
       setSubmitting(false);
     } catch (err) {
       console.log(err);
-
       dispatch({
         type: network_type.NETWORK_ERROR,
         payload: {

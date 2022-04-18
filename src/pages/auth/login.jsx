@@ -18,10 +18,7 @@ import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
-import api from "../../lib/api";
-import jsCookie from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
-import { auth_types } from "../../redux/types/auth";
 import { userLogin } from "../../redux/actions/auth";
 
 const Login = () => {

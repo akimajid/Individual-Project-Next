@@ -21,6 +21,7 @@ const ContentCard = (props) => {
       maxW="2xl"
       paddingY="4"
       marginY="8"
+      shadow="xl"
     >
       <Box paddingX="1" paddingBottom="2" display="flex" alignItems="center">
         <Avatar src="https://bit.ly/dan-abramov" size="md" />

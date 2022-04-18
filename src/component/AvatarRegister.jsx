@@ -42,7 +42,7 @@ const AvatarRegister = () => {
             left: 0,
           }}
         />
-         <Avatar
+        <Avatar
           name="Doraemon"
           src="https://en.siakapkeli.my/wp-content/uploads/2021/11/Doraemon-Wiki-Fandom.png"
           size={useBreakpointValue({ base: "md", md: "lg" })}
@@ -61,7 +61,7 @@ const AvatarRegister = () => {
             left: 0,
           }}
         />
-         <Avatar
+        <Avatar
           name="Goku"
           src="https://pbs.twimg.com/media/EOCY9e2UYAAmtey.jpg"
           size={useBreakpointValue({ base: "md", md: "lg" })}
@@ -80,7 +80,7 @@ const AvatarRegister = () => {
             left: 0,
           }}
         />
-         <Avatar
+        <Avatar
           name="Konan"
           src="https://i.redd.it/s0xg348cr7k31.png"
           size={useBreakpointValue({ base: "md", md: "lg" })}
@@ -100,7 +100,6 @@ const AvatarRegister = () => {
           }}
         />
       </AvatarGroup>
-      
     </>
   );
 };
