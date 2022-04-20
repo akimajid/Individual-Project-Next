@@ -5,7 +5,6 @@ import {
   Input,
   Text,
   Button,
-  Link,
   InputGroup,
   InputRightElement,
   useToast,
@@ -18,6 +17,7 @@ import { useRouter } from "next/router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../src/lib/api";
+import Link from "next/link"
 import { useDispatch, useSelector } from "react-redux";
 import { userRegister } from "../redux/actions/auth";
 
