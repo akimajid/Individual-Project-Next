@@ -1,12 +1,9 @@
-import { Box, Center, Text } from "@chakra-ui/react";
+import { Box, Center } from "@chakra-ui/react";
 import ContentCard from "../../component/ContentCard";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import Head from "next/head";
 import Page from "../../component/Page";
 
-const PostsPage = ({ postDetailData, webUrl }) => {
+const PostsPage = ({ post, postDetailData, webUrl }) => {
   return (
     <Page
       description={`${
@@ -22,11 +19,15 @@ const PostsPage = ({ postDetailData, webUrl }) => {
       <Box>
         <Center>
           <ContentCard
-              location={postDetailData.location}
-              caption={postDetailData.caption}
-              imageUrl={postDetailData.image_url}
-              numberOflikes={postDetailData.number_of_likes || 0}
-              username={postDetailData.username}
+              username={post.User.username}
+              profileAva={post.User.image_url}
+              location={post.location}
+              image={post.image}
+              caption={post.caption}
+              likes={post.like_count}
+              id={post.id}
+              comment={post.Comments}
+              userId={post.userId}
           />
         </Center>
       </Box>
@@ -35,16 +36,24 @@ const PostsPage = ({ postDetailData, webUrl }) => {
 };
 
 export async function getServerSideProps(context) {
-    const postId = context.params.id
+    const { id } = context.params
+    const { auth_token } = context.req.cookies
 
-    const res = await axios.get("http://localhost:2020/posts/" + postId)
-
-    return {
-        props: {
-            postDetailData: res.data,
-            webUrl: "http://localhost:3000/posts/" + postId
+    try {
+      const res = await axios.get(`localhost://localhost:2020/posts/${id}`, {
+        headers: {
+          Authorization: auth_token
         }
+      })
+      const post = res.data.result
+
+      return { props: { post } }
+    } catch (err) {
+      return {
+        props: {}
+      }
     }
+
 }
 
 export default PostsPage

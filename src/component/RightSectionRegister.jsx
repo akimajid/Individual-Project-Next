@@ -52,14 +52,14 @@ const RightSectionRegister = () => {
     validateOnChange: false,
     onSubmit: (values) => {
       if (values.password === values.repeat_password) {
-        delete values.repeat_password
+        delete values.repeat_password;
 
-        api.post("/auth/register", values)
-        router.push("/auth/login")
+        api.post("/auth/register", values);
+        router.push("/auth/login");
       }
     },
-  });
-  
+  }, 2000);
+
   return (
     <Stack bg="gray.50" rounded="xl" p={{ base: 4, sm: 6, md: 8 }}>
       <Stack spacing="4" marginBottom={8}>
