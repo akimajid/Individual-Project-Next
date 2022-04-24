@@ -16,7 +16,7 @@ import { FaRegHeart, FaRegComment } from "react-icons/fa";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 
 const ContentCard = (props) => {
-  const { location, caption, like_count, image_url, user_post } = props;
+  const { location, caption, like_count, image_url, user_post, createdAt } = props;
 
   return (
     <Container
@@ -101,6 +101,10 @@ const ContentCard = (props) => {
           {user_post?.username}
         </Text>
         <Text display="inline">{caption}</Text>
+      </Box>
+
+      <Box paddingLeft="1">
+        <Text fontSize="smaller" color="gray">{createdAt}</Text>
       </Box>
     </Container>
   );

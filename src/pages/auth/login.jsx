@@ -135,11 +135,11 @@ const Login = () => {
                 <FormHelperText>{formik.errors.password}</FormHelperText>
               </FormControl>
 
-              <Text as="span" textAlign="center">
+              <Text textAlign="center">
                 <Text as="span">Don't have an account ? </Text>
-                <Link href="/auth/register" color="blue.300">
+                <Link  as="span" color="blue.300" onClick={() => router.push("/auth/register")}>
                   Sign Up here
-                </Link>
+                </Link  > 
               </Text>
 
               <Link textAlign="center" color="blue.300">

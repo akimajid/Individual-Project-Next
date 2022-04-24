@@ -13,7 +13,7 @@ export const userLogin = (values, setSubmitting) => {
       const userResponse = res.data.result;
 
       jsCookie.set("auth_token", userResponse.token);
-      
+
       dispatch({
         type: auth_types.LOGIN_USER,
         payload: userResponse.user,
@@ -29,6 +29,25 @@ export const userLogin = (values, setSubmitting) => {
         },
       });
       setSubmitting(false);
+    }
+  };
+};
+
+export const fetchUserData = () => {
+  return async (dispatch, getState) => {
+    try {
+      const res = await api.get("/users", {
+        params: {
+          userId: getState().user.id,
+        },
+      });
+
+      dispatch({
+        type: auth_types.KEEP_LOGIN,
+        payload: res.data.result,
+      });
+    } catch (err) {
+      console.log(err);
     }
   };
 };

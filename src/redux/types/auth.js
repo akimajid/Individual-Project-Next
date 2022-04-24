@@ -3,4 +3,5 @@ export const auth_types = {
     LOGOUT_USER: "LOGOUT_USER",
     REGISTER_USER: "REGISTER_USER",
     AUTH_ERROR: "AUTH_ERROR",
+    KEEP_LOGIN: "KEEP_LOGIN"
 }

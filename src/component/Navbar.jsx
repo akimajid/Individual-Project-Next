@@ -48,7 +48,7 @@ const NavBarItem = () => {
               background: "gray.300",
             }}
           >
-            <Link href="/posts">Home</Link>
+            <Link onClick={() => router.push("/posts")}>Home</Link>
           </Box>
         </HStack>
         <Flex alignItems="center">
@@ -57,13 +57,11 @@ const NavBarItem = () => {
             <MenuButton as={Button} variant="flex" cursor="pointer" minW={0}>
               <Avatar
                 size="sm"
-                src="https://pbs.twimg.com/profile_images/998482729892069377/Ls1MMr3q_400x400.jpg"
+                src={authSelector.profile_picture}
               />
             </MenuButton>
             <MenuList>
-              <MenuItem>
-                <Link href="/profile">Profile</Link>
-              </MenuItem>
+              <MenuItem onClick={() => router.push("/profile")}>Profile</MenuItem>
               <MenuItem>Create post</MenuItem>
               <MenuItem onClick={logoutBtnHandler}>Log Out</MenuItem>
             </MenuList>
