@@ -56,6 +56,8 @@ const RightSectionRegister = () => {
 
         api.post("/auth/register", values);
         router.push("/auth/login");
+      } else {
+        return
       }
     },
   }, 2000);

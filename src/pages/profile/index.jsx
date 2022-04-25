@@ -10,10 +10,9 @@ import {
   Stack,
   Textarea,
 } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useFormik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
-import { auth_types } from "../../redux/types/";
+import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import api from "../../lib/api";
 
@@ -56,9 +55,9 @@ const profilePage = () => {
       formData.append("full_name", full_name || authSelector.full_name);
       formData.append("bio", bio || authSelector.bio);
       formData.append("email", email || authSelector.email);
-      formData.append("profile_image", selectedFile);
+      formData.append("profile_image_file", selectedFile);
 
-      const res = await api.patch("/auth/profile", formData);
+      const res = await api.patch("/users/profile", formData);
       const data = res.data.result;
 
       console.log(data);
@@ -74,8 +73,8 @@ const profilePage = () => {
   };
 
   return (
-    <Flex boxSizing="border-box" justify="center" m="20">
-      <Stack borderRadius={10} shadow="dark-lg">
+    <Flex justify="center" m="20">
+      <Stack boxSize="sm" height="100%" borderRadius={10} shadow="dark-lg">
         <Flex justifyContent="space-between">
           <Heading
             ms="3"
@@ -95,7 +94,7 @@ const profilePage = () => {
               onClick={() => setEdit(!edit)}
               colorScheme="orange"
             >
-              cancel
+              Cancel
             </Button>
           ) : (
             <Button
@@ -105,7 +104,7 @@ const profilePage = () => {
               onClick={() => setEdit(!edit)}
               colorScheme="messenger"
             >
-              edit
+              Edit
             </Button>
           )}
         </Flex>
