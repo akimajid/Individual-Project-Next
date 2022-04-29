@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Button,
+  Center,
   Flex,
   FormControl,
   FormLabel,
@@ -73,132 +74,152 @@ const profilePage = () => {
   };
 
   return (
-    <Flex justify="center" m="20">
-      <Stack boxSize="sm" height="100%" borderRadius={10} shadow="dark-lg">
-        <Flex justifyContent="space-between">
-          <Heading
-            ms="3"
-            mb="3"
-            mt="4"
-            fontSize="xl"
-            lineHeight="1.1"
-            justifyContent="space-between"
-          >
-            User profile
-          </Heading>
-          {edit ? (
-            <Button
-              size="xs"
-              mt={3}
-              me={2}
-              onClick={() => setEdit(!edit)}
-              colorScheme="orange"
+    <Center bgGradient="linear(to-r, gray.200, gray.400)">
+      <Flex justify="center" m="20">
+        <Stack
+          bgColor="white"
+          boxSize="sm"
+          height="100%"
+          borderRadius={10}
+          shadow="dark-lg"
+        >
+          <Flex justifyContent="space-between">
+            <Heading
+              ms="3"
+              mb="3"
+              mt="4"
+              fontSize="xl"
+              lineHeight="1.1"
+              justifyContent="space-between"
             >
-              Cancel
-            </Button>
-          ) : (
+              User profile
+            </Heading>
+            {edit ? (
+              <Button
+                size="xs"
+                mt={3}
+                me={2}
+                onClick={() => setEdit(!edit)}
+                colorScheme="red"
+              >
+                Cancel
+              </Button>
+            ) : (
+              <Button
+                color="white"
+                size="xs"
+                mt={3}
+                me={2}
+                onClick={() => setEdit(!edit)}
+                bgGradient="linear(to-r, green.400, blue.400)"
+                _hover={{
+                  bgGradient: "linear(to-r, green.300, blue.300)",
+                }}
+              >
+                Edit
+              </Button>
+            )}
+          </Flex>
+          <Flex mt="5" justify="center">
+            <Avatar size="xl" src={authSelector.profile_picture}></Avatar>
+            <Input
+              accept="image/png, image/jpeg"
+              display="none"
+              type="file"
+              id="image_url"
+              placeholder="Please enter domain"
+              name="image_url"
+              onChange={handleFile}
+              ref={inputFileRef}
+            />
+          </Flex>
+          <Flex mt={5} justify={"center"}>
             <Button
+              color="white"
               size="xs"
-              mt={3}
-              me={2}
-              onClick={() => setEdit(!edit)}
-              colorScheme="messenger"
+              hidden={edit ? false : true}
+              onClick={() => inputFileRef.current.click()}
+              bgGradient="linear(to-r, green.400, blue.400)"
+              _hover={{
+                bgGradient: "linear(to-r, green.300, blue.300)",
+              }}
             >
-              Edit
+              choose File
             </Button>
-          )}
-        </Flex>
-        <Flex mt="5" justify="center">
-          <Avatar size="xl" src={authSelector.profile_picture}></Avatar>
-          <Input
-            accept="image/png, image/jpeg"
-            display="none"
-            type="file"
-            id="image_url"
-            placeholder="Please enter domain"
-            name="image_url"
-            onChange={handleFile}
-            ref={inputFileRef}
-          />
-        </Flex>
-        <Flex mt={5} justify={"center"}>
-          <Button
-            size="xs"
-            hidden={edit ? false : true}
-            onClick={() => inputFileRef.current.click()}
-            colorScheme="facebook"
-          >
-            choose File
-          </Button>
-        </Flex>
+          </Flex>
 
-        <Box boxSizing="sm" p={4}>
-          <Stack>
-            <FormControl>
-              <FormLabel fontSize="xs">Username</FormLabel>
-              <Input
-                size="xs"
-                fontSize="sm"
-                id="username"
-                name="username"
-                defaultValue={authSelector.username}
-                isDisabled={edit ? false : true}
-                onChange={inputHandler}
-              />
+          <Box boxSizing="sm" p={4}>
+            <Stack>
+              <FormControl>
+                <FormLabel fontSize="xs">Username</FormLabel>
+                <Input
+                  size="xs"
+                  fontSize="sm"
+                  id="username"
+                  name="username"
+                  defaultValue={authSelector.username}
+                  isDisabled={edit ? false : true}
+                  onChange={inputHandler}
+                />
 
-              <FormLabel mt={2} fontSize="xs">
-                Full Name
-              </FormLabel>
-              <Input
-                size="xs"
-                fontSize="sm"
-                defaultValue={authSelector.full_name}
-                isDisabled={edit ? false : true}
-                id="full_name"
-                name="full_name"
-                onChange={inputHandler}
-              />
+                <FormLabel mt={2} fontSize="xs">
+                  Full Name
+                </FormLabel>
+                <Input
+                  size="xs"
+                  fontSize="sm"
+                  defaultValue={authSelector.full_name}
+                  isDisabled={edit ? false : true}
+                  id="full_name"
+                  name="full_name"
+                  onChange={inputHandler}
+                />
 
-              <FormLabel fontSize="xs" mt={2}>
-                Email Address
-              </FormLabel>
-              <Input
-                size="xs"
-                fontSize="sm"
-                defaultValue={authSelector.email}
-                isDisabled
-              />
+                <FormLabel fontSize="xs" mt={2}>
+                  Email Address
+                </FormLabel>
+                <Input
+                  size="xs"
+                  fontSize="sm"
+                  defaultValue={authSelector.email}
+                  isDisabled
+                />
 
-              <FormLabel fontSize="xs" mt={2}>
-                Bio
-              </FormLabel>
-              <Textarea
-                size="xs"
-                fontSize="sm"
-                id="bio"
-                name="bio"
-                defaultValue={authSelector.bio}
-                isDisabled={edit ? false : true}
-                onChange={inputHandler}
-              />
-            </FormControl>
-          </Stack>
-        </Box>
+                <FormLabel fontSize="xs" mt={2}>
+                  Bio
+                </FormLabel>
+                <Textarea
+                  size="xs"
+                  fontSize="sm"
+                  id="bio"
+                  name="bio"
+                  defaultValue={authSelector.bio}
+                  isDisabled={edit ? false : true}
+                  onChange={inputHandler}
+                />
+              </FormControl>
+            </Stack>
+          </Box>
 
-        <Flex justify={"end"}>
-          <Button
-            mb={3}
-            me={3}
-            size="sm"
-            hidden={edit ? false : true}
-            onClick={uploadContentHandler}
-            colorScheme="facebook"
-          >
-            Submit
-          </Button>
-        </Flex>
-      </Stack>
-    </Flex>
+          <Flex justify={"end"}>
+            <Button
+              color="white"
+              mb={3}
+              me={3}
+              size="sm"
+              hidden={edit ? false : true}
+              onClick={uploadContentHandler}
+              bgGradient="linear(to-r, green.400, blue.400)"
+              _hover={{
+                bgGradient: "linear(to-r, green.300, blue.300)",
+              }}
+            >
+              Submit
+            </Button>
+          </Flex>
+        </Stack>
+      </Flex>
+    </Center>
   );
 };
 

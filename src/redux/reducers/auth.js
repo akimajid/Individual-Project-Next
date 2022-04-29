@@ -20,6 +20,7 @@ export const auth_reducer = (state = init_state, action) => {
       profile_picture: action.payload.profile_picture,
       bio: action.payload.bio,
       id: action.payload.id,
+      errorMsg: ""
     };
   } else if (action.type === auth_types.LOGOUT_USER) {
     return init_state;

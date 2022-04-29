@@ -1,18 +1,20 @@
-import { Box, Center, Spinner } from "@chakra-ui/react";
+import { Box, Center, Spinner, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import ContentCard from "../../component/ContentCard";
-import axiosInstance from "../../lib/api";
+import api from "../../lib/api";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const PostsPage = () => {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
 
+  const toast = useToast();
+
   const maxPostsPage = 5;
 
   const fetchPosts = async () => {
     try {
-      const res = await axiosInstance.get("/posts", {
+      const res = await api.get("/posts", {
         params: {
           _limit: maxPostsPage,
           _page: page,
@@ -22,6 +24,13 @@ const PostsPage = () => {
       setPosts((prevPosts) => [...prevPosts, ...res.data.result.rows]);
     } catch (err) {
       console.log(err?.data?.message || err.message);
+      toast({
+        title: "Can't Reach The Server",
+        description: "Connect The Server",
+        status: "error",
+        duration: 2000,
+        position: "top",
+      });
     }
   };
 
@@ -42,7 +51,7 @@ const PostsPage = () => {
           hasMore={true}
           loader={<Spinner alignContent="center" />}
         >
-          {posts?.map((postData) => {
+          {posts.map((postData) => {
             return <ContentCard {...postData} />;
           })}
         </InfiniteScroll>

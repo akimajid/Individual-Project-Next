@@ -11,12 +11,67 @@ import {
   MenuItem,
   Menu,
   HStack,
+  Link,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { FaRegHeart, FaRegComment } from "react-icons/fa";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
+import { useSelector } from "react-redux";
+import api from "../lib/api";
+import moment from "moment"
 
-const ContentCard = (props) => {
-  const { location, caption, like_count, image_url, user_post, createdAt } = props;
+const ContentCard = ({
+  location,
+  caption,
+  like_count,
+  image_url,
+  User,
+  createdAt,
+  Comments,
+  id: postId
+}) => {
+  const [comments, setComments] = useState([]);
+  const [page, setPage] = useState(1);
+  const authSelector = useSelector((state) => state.auth);
+
+  const fetchComments = async () => {
+    try {
+      const res = await api.get(`/posts/` + postId, {
+        params: {
+          _page: page,
+        },
+      });
+
+      setComments((prevComments) => [
+        ...prevComments,
+        ...res?.data?.result?.comment,
+      ]);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (authSelector.id) {
+      fetchComments()
+    }
+  }, [authSelector.id,page])
+
+  const renderComment = () => {
+    return comments.map((val) => {
+      return (
+        <Box display="flex" marginLeft="1" marginRight="2" marginTop="1">
+          <Text lineHeight="4">
+            <b>{val?.User?.username} </b>
+            {val?.content} {" "}
+            <span style={{ fontSize:"small", color: "gray.400", fontWeight: "lighter" }}>
+               {`(${moment(val?.createdAt).format("MM/DD")})`}
+            </span>
+          </Text>
+        </Box>
+      );
+    })
+  }
 
   return (
     <Container
@@ -36,11 +91,11 @@ const ContentCard = (props) => {
         alignItems="center"
       >
         <HStack>
-          <Avatar src={user_post?.profile_picture} size="md" />
+          <Avatar src={User?.profile_picture} size="md" />
 
           <Box marginLeft="2">
             <Text fontWeight="bold" fontSize="sm">
-              {user_post?.username}
+              {User?.username}
             </Text>
 
             <Text fontSize="sm" color="GrayText">
@@ -65,8 +120,9 @@ const ContentCard = (props) => {
               />
             </MenuButton>
             <MenuList>
-              <MenuItem>Edit Post</MenuItem>
-              <MenuItem>Delete Post</MenuItem>
+              <MenuItem>
+                <Link href={`/post/${postId}`}>View details...</Link>
+              </MenuItem>
             </MenuList>
           </Menu>
         </Box>
@@ -97,14 +153,25 @@ const ContentCard = (props) => {
       </Box>
 
       <Box paddingTop="1">
-        <Text paddingLeft="1" display="inline" fontWeight="bold" marginRight="2">
-          {user_post?.username}
+        <Text
+          paddingLeft="1"
+          display="inline"
+          fontWeight="bold"
+          marginRight="2"
+        >
+          {User?.username}
         </Text>
         <Text display="inline">{caption}</Text>
       </Box>
 
+      <Box>
+        {renderComment()}
+      </Box>
+
       <Box paddingLeft="1">
-        <Text fontSize="smaller" color="gray">{createdAt}</Text>
+        <Text mt="1" fontSize="smaller" color="gray">
+          {createdAt}
+        </Text>
       </Box>
     </Container>
   );
