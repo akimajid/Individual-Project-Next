@@ -30,42 +30,16 @@ const ContentCard = ({
   Comments,
   id: postId
 }) => {
-  const [comments, setComments] = useState([]);
-  const [page, setPage] = useState(1);
-  const authSelector = useSelector((state) => state.auth);
-
-  const fetchComments = async () => {
-    try {
-      const res = await api.get(`/posts/` + postId, {
-        params: {
-          _page: page,
-        },
-      });
-
-      setComments((prevComments) => [
-        ...prevComments,
-        ...res?.data?.result?.comment,
-      ]);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    if (authSelector.id) {
-      fetchComments()
-    }
-  }, [authSelector.id,page])
 
   const renderComment = () => {
-    return comments.map((val) => {
+    return Comments.map((val) => {
       return (
         <Box display="flex" marginLeft="1" marginRight="2" marginTop="1">
           <Text lineHeight="4">
             <b>{val?.User?.username} </b>
             {val?.content} {" "}
-            <span style={{ fontSize:"small", color: "gray.400", fontWeight: "lighter" }}>
-               {`(${moment(val?.createdAt).format("MM/DD")})`}
+            <span style={{ fontSize:"small", color: "gray", fontWeight: "lighter" }}>
+               {`(${moment(val?.createdAt).format("MMMM, DD")})`}
             </span>
           </Text>
         </Box>
@@ -121,7 +95,7 @@ const ContentCard = ({
             </MenuButton>
             <MenuList>
               <MenuItem>
-                <Link href={`/post/${postId}`}>View details...</Link>
+                <Link href={`/posts/${postId}`}>View details...</Link>
               </MenuItem>
             </MenuList>
           </Menu>
@@ -170,7 +144,7 @@ const ContentCard = ({
 
       <Box paddingLeft="1">
         <Text mt="1" fontSize="smaller" color="gray">
-          {createdAt}
+          {`${moment(createdAt).format("DD--MMMM-YYYY")}`}
         </Text>
       </Box>
     </Container>
