@@ -28,53 +28,105 @@ import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import moment from "moment";
 import { useState } from "react";
 import { useEffect } from "react"
+import { useFormik } from "formik"
+import * as Yup from "yup"
+import { useRouter } from "next/router"
 
-const PostPageDetails = ({ post, id: postId }) => {
+const PostPageDetails = ({ post }) => {
   const authSelector = useSelector((state) => state.auth);
 
   const [comments, setComments] = useState([]);
   const [page, setPage] = useState(1)
 
+  const maxComments = 5
+
   const toast = useToast()
+
+  const router = useRouter()
 
   const deleteButton = async () => {
     try {
       await api.delete("/posts/" + post?.id);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
-  const fetchComments = async () => {
-    try {
-      const res = await api.get("/posts/" + postId, {
-        params: {
-          _page: page,
-        },
-      });
-
-      console.log(postId);
-      console.log(res.data.result);
-      setComments((prevComments) => [
-        ...prevComments,
-        ...res?.data?.result?.comment,
-      ]);
+      router.push("/posts")
     } catch (error) {
+      console.log(error);
       toast({
-        title: "Can't Reach The Comment Server",
+        title: "Can't Reach The Server",
         description: "Connect The Server",
         status: "error",
-        duration: 3000,
-        isClosable: true,
+        duration: 2000,
         position: "top",
       });
     }
   };
 
+  const formik = useFormik({
+    initialValues: {
+      content: "",
+    },
+    validateOnChange: true,
+    onSubmit: async (values) => {
+      try {
+        await api.post("/comments/post/" + post?.id, {
+          post_id: post?.id,
+          user_id: authSelector.id,
+          content: values.content,
+        });
+
+        formik.setFieldValue("content", "");
+        fetchComments();
+        renderComment();
+        setViewComment(false);
+      } catch (error) {
+        toast({
+          title: "Can't Add a Comment",
+          description: "Connect The Server",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+      }
+    },
+    validationSchema: Yup.object().shape({
+      content: Yup.string().max(300, "You've reached Max Character"),
+    }),
+  });
+
+  const fetchComments = async () => {
+    try {
+      const res = await api.get("/posts/" + post?.id, {
+        params: {
+          _page: page,
+          _limit: maxComments,
+        },
+      });
+
+      setComments((prevComments) => [
+        ...prevComments,
+        ...res?.data?.result?.comment?.rows,
+      ]);
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Can't Reach The Comment Server",
+        description: "Connect The Server",
+        status: "error",
+        duration: 2000,
+        position: "top",
+      });
+    }
+  };
+
+  const nextComment = () => {
+    setPage(page + 1)
+  }
+
   const renderComment = () => {
     return comments.map((val) => {
       return (
-        <Box display="flex" marginLeft="1" marginRight="2" marginTop="1">
+        <Box display="flex" marginLeft="2" marginRight="2" marginTop="1">
           <Text lineHeight="4">
             <b>{val?.User?.username} </b>
             {val?.content}{" "}
@@ -93,18 +145,11 @@ const PostPageDetails = ({ post, id: postId }) => {
     });
   };
 
-  const viewCommentButton = () => {
-    setPage(page + 1);
-  };
-
-  useEffect(() => {
-      fetchComments();
-  }, [page]);
-
   return (
     <Page title={`${post?.User?.username} post`}>
-      <Container mb="14" maxW="5xl" shadow="dark-lg" mt="16">
-        <Flex mb="5">
+      <Center bgGradient="linear(to-r, gray.200, gray.400)">
+      <Container bgColor="white" mb="14" maxW="5xl" shadow="dark-lg" mt="16">
+        <Flex>
           <Box my="5" flex="65">
             <Stack>
               <AspectRatio ratio={4 / 3}>
@@ -112,6 +157,8 @@ const PostPageDetails = ({ post, id: postId }) => {
               </AspectRatio>
             </Stack>
           </Box>
+
+          <Divider mx="1" borderColor="red" orientation="vertical"/>
 
           <Box my="5" flex="35">
             <Box mx="3" mt="2">
@@ -159,7 +206,7 @@ const PostPageDetails = ({ post, id: postId }) => {
                           <Link href={`/edit-post/${post?.id}`}>
                             <MenuItem>Edit post</MenuItem>
                           </Link>
-                          <MenuItem>Delete post</MenuItem>
+                          <MenuItem onClick={deleteButton}>Delete post</MenuItem>
                         </MenuList>
                       </Menu>
                     ) : null}
@@ -224,12 +271,20 @@ const PostPageDetails = ({ post, id: postId }) => {
 
             <Text>{renderComment()}</Text>
 
-            <Text onClick={viewCommentButton} mt="1" textAlign="center">
+            <Text
+            onClick={nextComment} 
+            marginTop="1" 
+            mt="1" 
+            textAlign="center"
+            _hover={{
+              cursor: "pointer"
+            }}>
               View mores...
             </Text>
           </Box>
         </Flex>
       </Container>
+      </Center>
     </Page>
   );
 };
@@ -246,7 +301,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      post: res?.data?.result,
+      post: res?.data?.result
     },
   };
 }

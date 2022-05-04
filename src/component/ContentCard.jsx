@@ -144,7 +144,7 @@ const ContentCard = ({
 
       <Box paddingLeft="1">
         <Text mt="1" fontSize="smaller" color="gray">
-          {`${moment(createdAt).format("DD--MMMM-YYYY")}`}
+          {`${moment(createdAt).format("DD-MMMM-YYYY")}`}
         </Text>
       </Box>
     </Container>
