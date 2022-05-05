@@ -1,8 +1,12 @@
 import { Box, Button, Input, Flex, Text, useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useState, useRef } from "react";
+import { useSelector } from "react-redux";
+import api from "../lib/api"
 
 const PostUploader = () => {
+  const authSelector = useSelector((state) => state.auth)
+
   const toast = useToast();
 
   const formik = useFormik({
@@ -37,8 +41,8 @@ const PostUploader = () => {
 
     formData.append("caption", caption);
     formData.append("location", location);
-    formData.append("user_id", userSelector.id);
-    formData.append("image_url", selectedFile);
+    formData.append("user_id", authSelector.id);
+    formData.append("post_image_file", selectedFile);
 
     try {
       await api.post("/posts", formData);

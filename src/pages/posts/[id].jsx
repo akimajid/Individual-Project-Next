@@ -32,7 +32,7 @@ import { useFormik } from "formik"
 import * as Yup from "yup"
 import { useRouter } from "next/router"
 
-const PostPageDetails = ({ post }) => {
+const PostPageDetails = ({ post, Comments }) => {
   const authSelector = useSelector((state) => state.auth);
 
   const [comments, setComments] = useState([]);
@@ -144,6 +144,12 @@ const PostPageDetails = ({ post }) => {
       );
     });
   };
+
+  // useEffect(() => {
+  //   if (authSelector.id) {
+  //     fetchComments()
+  //   }
+  // }, [authSelector.id, page])
 
   return (
     <Page title={`${post?.User?.username} post`}>
@@ -301,7 +307,8 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      post: res?.data?.result
+      post: res?.data?.result,
+      // Comments: res?.data?.result
     },
   };
 }

@@ -62,7 +62,7 @@ const NavBarItem = () => {
             </MenuButton>
             <MenuList>
               <MenuItem onClick={() => router.push("/profile")}>Profile</MenuItem>
-              <MenuItem>Create post</MenuItem>
+              <MenuItem onClick={() => router.push("/upload")}>Create post</MenuItem>
               <MenuItem onClick={logoutBtnHandler}>Log Out</MenuItem>
             </MenuList>
           </Menu>
