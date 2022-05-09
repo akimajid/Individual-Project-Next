@@ -57,7 +57,7 @@ const Login = () => {
 
   return (
     <Center bgGradient="linear(to-r, gray.200, gray.400)" position="flex">
-      <Box width="md" margin="28">
+      <Box width="md" margin="32">
         <Stack
           spacing="4"
           bg="gray.50"

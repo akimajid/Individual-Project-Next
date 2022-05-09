@@ -1,7 +1,12 @@
-const VerificationPage = () => {
-    return (
-        <h1>You success verification your account</h1>
-    )
-}
+import Navbar from "../../component/Navbar";
 
-export default VerificationPage
+const VerificationPage = () => {
+  return (
+    <>
+      <Navbar />
+      <h1>You success verification your account</h1>
+    </>
+  );
+};
+
+export default VerificationPage;

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ContentCard from "../../component/ContentCard";
 import api from "../../lib/api";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Navbar from "../../component/Navbar"
 
 const PostsPage = () => {
   const [posts, setPosts] = useState([]);
@@ -43,6 +44,8 @@ const PostsPage = () => {
   }, [page]);
 
   return (
+    <>
+    <Navbar />
     <Box bgGradient="linear(to-r, gray.200, gray.400)" spacing="4">
       <Center>
         <InfiniteScroll
@@ -57,6 +60,7 @@ const PostsPage = () => {
         </InfiniteScroll>
       </Center>
     </Box>
+    </>
   );
 };
 

@@ -25,6 +25,8 @@ const RightSectionRegister = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
+  const authSelector = useSelector((state) => state.auth);
+
   const router = useRouter();
 
   const formik = useFormik({
@@ -61,6 +63,12 @@ const RightSectionRegister = () => {
       }
     },
   }, 2000);
+
+  useEffect(() => {
+    if (authSelector.id) {
+      router.push("/posts");
+    }
+  }, [authSelector.id]);
 
   return (
     <Stack bg="gray.50" rounded="xl" p={{ base: 4, sm: 6, md: 8 }}>

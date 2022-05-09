@@ -16,7 +16,7 @@ import {
   Divider,
   AspectRatio,
   HStack,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import api from "../../lib/api";
 import ContentCard from "../../component/ContentCard";
@@ -27,28 +27,29 @@ import { useSelector } from "react-redux";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import moment from "moment";
 import { useState } from "react";
-import { useEffect } from "react"
-import { useFormik } from "formik"
-import * as Yup from "yup"
-import { useRouter } from "next/router"
+import { useEffect } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useRouter } from "next/router";
+import Navbar from "../../component/Navbar";
 
 const PostPageDetails = ({ post, Comments }) => {
   const authSelector = useSelector((state) => state.auth);
 
   const [comments, setComments] = useState([]);
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
 
-  const maxComments = 5
+  const maxComments = 5;
 
-  const toast = useToast()
+  const toast = useToast();
 
-  const router = useRouter()
+  const router = useRouter();
 
   const deleteButton = async () => {
     try {
       await api.delete("/posts/" + post?.id);
 
-      router.push("/posts")
+      router.push("/posts");
     } catch (error) {
       console.log(error);
       toast({
@@ -105,7 +106,7 @@ const PostPageDetails = ({ post, Comments }) => {
 
       setComments((prevComments) => [
         ...prevComments,
-        ...res?.data?.result?.comment?.rows,
+        ...res?.data?.result?.Comments,
       ]);
     } catch (error) {
       console.log(error);
@@ -120,13 +121,13 @@ const PostPageDetails = ({ post, Comments }) => {
   };
 
   const nextComment = () => {
-    setPage(page + 1)
-  }
+    setPage(page + 1);
+  };
 
   const renderComment = () => {
     return comments.map((val) => {
       return (
-        <Box display="flex" marginLeft="2" marginRight="2" marginTop="1">
+        <Box display="flex" marginLeft="2" marginRight="2" marginTop="2">
           <Text lineHeight="4">
             <b>{val?.User?.username} </b>
             {val?.content}{" "}
@@ -145,153 +146,163 @@ const PostPageDetails = ({ post, Comments }) => {
     });
   };
 
-  // useEffect(() => {
-  //   if (authSelector.id) {
-  //     fetchComments()
-  //   }
-  // }, [authSelector.id, page])
+  useEffect(() => {
+      fetchComments()
+  }, [page])
 
   return (
-    <Page title={`${post?.User?.username} post`}>
-      <Center bgGradient="linear(to-r, gray.200, gray.400)">
-      <Container bgColor="white" mb="14" maxW="5xl" shadow="dark-lg" mt="16">
-        <Flex>
-          <Box my="5" flex="65">
-            <Stack>
-              <AspectRatio ratio={4 / 3}>
-                <Image width="100%" src={post?.image_url} />
-              </AspectRatio>
-            </Stack>
-          </Box>
+    <>
+      <Navbar />
+      <Page title={`${post?.User?.username} post`}>
+        <Center bgGradient="linear(to-r, gray.200, gray.400)">
+          <Container
+            bgColor="white"
+            mb="14"
+            maxW="5xl"
+            shadow="dark-lg"
+            mt="16"
+          >
+            <Flex>
+              <Box my="5" flex="65">
+                <Stack>
+                  <AspectRatio ratio={4 / 3}>
+                    <Image width="100%" src={post?.image_url} />
+                  </AspectRatio>
+                </Stack>
+              </Box>
 
-          <Divider mx="1" borderColor="red" orientation="vertical"/>
+              <Divider mx="1" borderColor="red" orientation="vertical" />
 
-          <Box my="5" flex="35">
-            <Box mx="3" mt="2">
-              <Box display="flex" flexDirection="column">
-                <Box
-                  justifyContent="space-between"
-                  mb="3"
-                  display="flex"
-                  alignItems="center"
-                >
-                  <HStack>
-                    <Link href={`/profile/${post?.User?.id}`}>
-                      <Avatar src={post?.User?.profile_picture} />
-                    </Link>
+              <Box my="5" flex="35">
+                <Box mx="3" mt="2">
+                  <Box display="flex" flexDirection="column">
+                    <Box
+                      justifyContent="space-between"
+                      mb="3"
+                      display="flex"
+                      alignItems="center"
+                    >
+                      <HStack>
+                        <Link href={`/profile/${post?.User?.id}`}>
+                          <Avatar src={post?.User?.profile_picture} />
+                        </Link>
 
-                    <Box ml="2">
-                      <Link
-                        href={`/profile/${post?.User?.id}`}
-                        textDecoration="none"
-                      >
-                        <Text className="username" fontWeight="bold">
-                          {post?.User?.username}
-                        </Text>
-                      </Link>
-                      <Text color="gray">{post?.location}</Text>
-                    </Box>
-                  </HStack>
-
-                  <Box>
-                    {post?.user_id == authSelector.id ? (
-                      <Menu>
-                        <MenuButton>
-                          <Icon
-                            as={HiOutlineMenuAlt4}
-                            ml="4"
-                            boxSize="6"
-                            sx={{
-                              _hover: {
-                                cursor: "pointer",
-                              },
-                            }}
-                          ></Icon>
-                        </MenuButton>
-                        <MenuList>
-                          <Link href={`/edit-post/${post?.id}`}>
-                            <MenuItem>Edit post</MenuItem>
+                        <Box ml="2">
+                          <Link
+                            href={`/profile/${post?.User?.id}`}
+                            textDecoration="none"
+                          >
+                            <Text className="username" fontWeight="bold">
+                              {post?.User?.username}
+                            </Text>
                           </Link>
-                          <MenuItem onClick={deleteButton}>Delete post</MenuItem>
-                        </MenuList>
-                      </Menu>
-                    ) : null}
+                          <Text color="gray">{post?.location}</Text>
+                        </Box>
+                      </HStack>
+
+                      <Box>
+                        {post?.user_id == authSelector.id ? (
+                          <Menu>
+                            <MenuButton>
+                              <Icon
+                                as={HiOutlineMenuAlt4}
+                                ml="4"
+                                boxSize="6"
+                                sx={{
+                                  _hover: {
+                                    cursor: "pointer",
+                                  },
+                                }}
+                              ></Icon>
+                            </MenuButton>
+                            <MenuList>
+                              <Link href={`/edit-post/${post?.id}`}>
+                                <MenuItem>Edit post</MenuItem>
+                              </Link>
+                              <MenuItem onClick={deleteButton}>
+                                Delete post
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
+                        ) : null}
+                      </Box>
+                    </Box>
+
+                    <Box>
+                      <Icon
+                        boxSize="6"
+                        mr="4"
+                        as={FaRegHeart}
+                        sx={{
+                          _hover: {
+                            cursor: "pointer",
+                            color: "Red",
+                          },
+                        }}
+                      ></Icon>
+
+                      <Icon
+                        boxSize="6"
+                        mr="4"
+                        as={FaRegComment}
+                        sx={{
+                          _hover: {
+                            cursor: "pointer",
+                            color: "blue",
+                          },
+                        }}
+                      ></Icon>
+                    </Box>
+
+                    <Text pt="1" fontSize="sm" fontWeight="bold">
+                      {post?.like_count?.toLocaleString()} Likes
+                    </Text>
                   </Box>
                 </Box>
 
-                <Box>
-                  <Icon
-                    boxSize="6"
-                    mr="4"
-                    as={FaRegHeart}
-                    sx={{
-                      _hover: {
-                        cursor: "pointer",
-                        color: "Red",
-                      },
-                    }}
-                  ></Icon>
+                <Box paddingTop="1" ml="2">
+                  <Text
+                    paddingLeft="1"
+                    display="inline"
+                    fontWeight="bold"
+                    marginRight="2"
+                  >
+                    {post?.User?.username}
+                  </Text>
+                  <Text display="inline">{post?.caption}</Text>
 
-                  <Icon
-                    boxSize="6"
-                    mr="4"
-                    as={FaRegComment}
-                    sx={{
-                      _hover: {
-                        cursor: "pointer",
-                        color: "blue",
-                      },
-                    }}
-                  ></Icon>
+                  <Text
+                    textAlign="right"
+                    mt="2"
+                    fontSize="smaller"
+                    color="gray"
+                    fontWeight="hairline"
+                  >
+                    {`${moment(post?.createdAt).format("DD-MMMM-YYYY")}`}
+                  </Text>
                 </Box>
 
-                <Text pt="1" fontSize="sm" fontWeight="bold">
-                  {post?.like_count?.toLocaleString()} Likes
+                <Divider ml="2" />
+
+                <Text>{renderComment()}</Text>
+
+                <Text
+                  onClick={nextComment}
+                  marginTop="1"
+                  mt="1"
+                  textAlign="center"
+                  _hover={{
+                    cursor: "pointer",
+                  }}
+                >
+                  View mores...
                 </Text>
               </Box>
-            </Box>
-
-            <Box paddingTop="1" ml="2">
-              <Text
-                paddingLeft="1"
-                display="inline"
-                fontWeight="bold"
-                marginRight="2"
-              >
-                {post?.User?.username}
-              </Text>
-              <Text display="inline">{post?.caption}</Text>
-
-              <Text
-                textAlign="right"
-                mt="2"
-                fontSize="smaller"
-                color="gray"
-                fontWeight="hairline"
-              >
-                {`${moment(post?.createdAt).format("DD-MMMM-YYYY")}`}
-              </Text>
-            </Box>
-
-            <Divider ml="2" />
-
-            <Text>{renderComment()}</Text>
-
-            <Text
-            onClick={nextComment} 
-            marginTop="1" 
-            mt="1" 
-            textAlign="center"
-            _hover={{
-              cursor: "pointer"
-            }}>
-              View mores...
-            </Text>
-          </Box>
-        </Flex>
-      </Container>
-      </Center>
-    </Page>
+            </Flex>
+          </Container>
+        </Center>
+      </Page>
+    </>
   );
 };
 
@@ -308,7 +319,6 @@ export async function getServerSideProps(context) {
   return {
     props: {
       post: res?.data?.result,
-      // Comments: res?.data?.result
     },
   };
 }

@@ -29,7 +29,6 @@ const AuthProvider = ({ children }) => {
 
   return (
     <>
-      <Navbar />
       {children}
     </>
   )

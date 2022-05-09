@@ -1,7 +1,7 @@
 import axios from "axios";
 import jsCookie from "js-cookie";
 import store from "../redux/store";
-import { network_type } from "../redux/types";
+import { network_type, auth_types } from "../redux/types";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:2020",
@@ -20,7 +20,12 @@ axiosInstance.interceptors.response.use(
   (err) => {
     if (err.response.status == 419) {
       jsCookie.remove("auth_token");
+      jsCookie.remove("user_data")
 
+      store.dispatch({
+        type: auth_types.LOGOUT_USER,
+      });
+    
       store.dispatch({
         type: network_type.NETWORK_ERROR,
         payload: {
