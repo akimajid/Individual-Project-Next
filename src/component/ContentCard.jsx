@@ -18,7 +18,8 @@ import { FaRegHeart, FaRegComment } from "react-icons/fa";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import api from "../lib/api";
-import moment from "moment"
+import moment from "moment";
+import { useRouter } from "next/router";
 
 const ContentCard = ({
   location,
@@ -28,8 +29,9 @@ const ContentCard = ({
   User,
   createdAt,
   Comments,
-  id: postId
+  id: postId,
 }) => {
+  const router = useRouter();
 
   const renderComment = () => {
     return Comments.map((val) => {
@@ -37,15 +39,21 @@ const ContentCard = ({
         <Box display="flex" marginLeft="1" marginRight="2" marginTop="1">
           <Text lineHeight="4">
             <b>{val?.User?.username} </b>
-            {val?.content} {" "}
-            <span style={{ fontSize:"small", color: "gray", fontWeight: "lighter" }}>
-               {`(${moment(val?.createdAt).format("MMMM, DD")})`}
+            {val?.content}{" "}
+            <span
+              style={{
+                fontSize: "small",
+                color: "gray",
+                fontWeight: "lighter",
+              }}
+            >
+              {`(${moment(val?.createdAt).format("MMMM, DD")})`}
             </span>
           </Text>
         </Box>
       );
-    })
-  }
+    });
+  };
 
   return (
     <Container
@@ -107,14 +115,25 @@ const ContentCard = ({
       </AspectRatio>
 
       <Box marginTop="2">
-        <Icon boxSize={6} as={FaRegHeart} />
         <Icon
+          boxSize={6}
+          as={FaRegHeart}
+          sx={{
+            _hover: {
+              cursor: "pointer",
+              color: "red",
+            },
+          }}
+        />
+        <Icon
+          onClick={() => router.push(`/posts/${postId}`)}
           marginLeft="4"
           boxSize={6}
           as={FaRegComment}
           sx={{
             _hover: {
               cursor: "pointer",
+              color: "blue",
             },
           }}
         />
@@ -138,9 +157,7 @@ const ContentCard = ({
         <Text display="inline">{caption}</Text>
       </Box>
 
-      <Box>
-        {renderComment()}
-      </Box>
+      <Box>{renderComment()}</Box>
 
       <Box paddingLeft="1">
         <Text mt="1" fontSize="smaller" color="gray">

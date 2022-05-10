@@ -5,7 +5,6 @@ import {
   Flex,
   Stack,
   Image,
-  Link,
   Avatar,
   Text,
   Icon,
@@ -147,8 +146,8 @@ const PostPageDetails = ({ post, Comments }) => {
   };
 
   useEffect(() => {
-      fetchComments()
-  }, [page])
+    fetchComments();
+  }, [page]);
 
   return (
     <>
@@ -183,19 +182,12 @@ const PostPageDetails = ({ post, Comments }) => {
                       alignItems="center"
                     >
                       <HStack>
-                        <Link href={`/profile/${post?.User?.id}`}>
-                          <Avatar src={post?.User?.profile_picture} />
-                        </Link>
+                        <Avatar src={post?.User?.profile_picture} />
 
                         <Box ml="2">
-                          <Link
-                            href={`/profile/${post?.User?.id}`}
-                            textDecoration="none"
-                          >
-                            <Text className="username" fontWeight="bold">
-                              {post?.User?.username}
-                            </Text>
-                          </Link>
+                          <Text className="username" fontWeight="bold">
+                            {post?.User?.username}
+                          </Text>
                           <Text color="gray">{post?.location}</Text>
                         </Box>
                       </HStack>
@@ -216,9 +208,13 @@ const PostPageDetails = ({ post, Comments }) => {
                               ></Icon>
                             </MenuButton>
                             <MenuList>
-                              <Link href={`/edit-post/${post?.id}`}>
-                                <MenuItem>Edit post</MenuItem>
-                              </Link>
+                              <MenuItem
+                                onClick={() =>
+                                  router.push(`/edit-post/${post?.id}`)
+                                }
+                              >
+                                Edit post
+                              </MenuItem>
                               <MenuItem onClick={deleteButton}>
                                 Delete post
                               </MenuItem>
