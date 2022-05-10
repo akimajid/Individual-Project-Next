@@ -105,17 +105,21 @@ const EditPostPage = ({ photosDetail }) => {
                     />
                   </Box>
                   <Box mt="3" align="end">
-                      <Button
-                        onClick={formik.handleSubmit}
-                        colorScheme="green"
-                        mr="3"
-                        width="fit-content"
-                      >
-                        Save
-                      </Button>
+                    <Button
+                      onClick={formik.handleSubmit}
+                      mr="3"
+                      width="fit-content"
+                      color="white"
+                      bgGradient="linear(to-r, green.400, blue.400)"
+                      _hover={{
+                        bgGradient: "linear(to-r, green.300, blue.300)",
+                      }}
+                    >
+                      Save
+                    </Button>
 
                     <Link href={"/posts"}>
-                      <Button colorScheme="red" width="fit-content">
+                      <Button colorScheme="blue" width="fit-content">
                         Home
                       </Button>
                     </Link>

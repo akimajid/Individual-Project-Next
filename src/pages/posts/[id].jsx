@@ -16,12 +16,16 @@ import {
   AspectRatio,
   HStack,
   useToast,
+  FormControl,
+  FormHelperText,
+  Input,
+  Button,
 } from "@chakra-ui/react";
 import api from "../../lib/api";
 import ContentCard from "../../component/ContentCard";
 import axios from "axios";
 import Page from "../../component/Page";
-import { FaRegHeart, FaRegComment } from "react-icons/fa";
+import { FaRegHeart, FaRegComment, FaHeart } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import moment from "moment";
@@ -36,13 +40,20 @@ const PostPageDetails = ({ post, Comments }) => {
   const authSelector = useSelector((state) => state.auth);
 
   const [comments, setComments] = useState([]);
+  const [viewComment, setViewComment] = useState(false);
   const [page, setPage] = useState(1);
+  const [postLikes, setPostLikes] = useState({});
+  const [likePost, setLikePost] = useState(false);
 
   const maxComments = 5;
 
   const toast = useToast();
 
   const router = useRouter();
+
+  const refreshPage = () => {
+    window.location.reload();
+  };
 
   const deleteButton = async () => {
     try {
@@ -75,16 +86,17 @@ const PostPageDetails = ({ post, Comments }) => {
         });
 
         formik.setFieldValue("content", "");
-        fetchComments();
+        // fetchComments();
         renderComment();
         setViewComment(false);
+        refreshPage();
       } catch (error) {
         toast({
           title: "Can't Add a Comment",
           description: "Connect The Server",
           status: "error",
-          duration: 3000,
-          isClosable: true,
+          duration: 2000,
+
           position: "top",
         });
       }
@@ -119,8 +131,77 @@ const PostPageDetails = ({ post, Comments }) => {
     }
   };
 
+  const fetchLike = async () => {
+    try {
+      const res = await api.get("/posts/postlike/" + post?.id);
+
+      const res2 = await api.get("/posts/" + post?.id, {
+        params: {
+          _page: page,
+          _limit: maxComments,
+        },
+      });
+
+      setPostLikes(res2?.data?.result?.post?.like_count);
+
+      if (!res?.data?.result) {
+        return setLikePost(false);
+      } else if (res?.data?.result) {
+        return setLikePost(true);
+      }
+    } catch (error) {
+      toast({
+        title: "Can't Reach Like Server",
+        description: "Connect The Server",
+        status: "error",
+        duration: 2000,
+        position: "top",
+      });
+    }
+  };
+
+  const likeButton = async () => {
+    try {
+      await api.post("/posts/postlike/" + post?.id);
+
+      setLikePost(true);
+      fetchLike();
+      refreshPage()
+    } catch (error) {
+      toast({
+        title: "Can't Reach Like Server",
+        description: "Connect The Server",
+        status: "error",
+        duration: 2000,
+        position: "top",
+      });
+    }
+  };
+
+  const unlikeButton = async () => {
+    try {
+      await api.delete("/posts/postlike/" + post?.id);
+
+      setLikePost(false);
+      fetchLike();
+      refreshPage()
+    } catch (error) {
+      toast({
+        title: "Can't Reach Like Server",
+        description: "Connect The Server",
+        status: "error",
+        duration: 2000,
+        position: "top",
+      });
+    }
+  };
+
   const nextComment = () => {
     setPage(page + 1);
+  };
+
+  const hideCommentBtn = () => {
+    setViewComment(!viewComment);
   };
 
   const renderComment = () => {
@@ -147,6 +228,8 @@ const PostPageDetails = ({ post, Comments }) => {
 
   useEffect(() => {
     fetchComments();
+
+    return fetchLike();
   }, [page]);
 
   return (
@@ -225,19 +308,37 @@ const PostPageDetails = ({ post, Comments }) => {
                     </Box>
 
                     <Box>
-                      <Icon
-                        boxSize="6"
-                        mr="4"
-                        as={FaRegHeart}
-                        sx={{
-                          _hover: {
-                            cursor: "pointer",
-                            color: "Red",
-                          },
-                        }}
-                      ></Icon>
+                      {likePost ? (
+                        <Icon
+                          boxSize="6"
+                          onClick={unlikeButton}
+                          marginRight="4"
+                          color="red"
+                          as={FaHeart}
+                          sx={{
+                            _hover: {
+                              cursor: "pointer",
+                              color: "red",
+                            },
+                          }}
+                        ></Icon>
+                      ) : (
+                        <Icon
+                          boxSize="6"
+                          onClick={likeButton}
+                          marginRight="4"
+                          as={FaRegHeart}
+                          sx={{
+                            _hover: {
+                              cursor: "pointer",
+                              color: "red",
+                            },
+                          }}
+                        ></Icon>
+                      )}
 
                       <Icon
+                        onClick={hideCommentBtn}
                         boxSize="6"
                         mr="4"
                         as={FaRegComment}
@@ -251,7 +352,9 @@ const PostPageDetails = ({ post, Comments }) => {
                     </Box>
 
                     <Text pt="1" fontSize="sm" fontWeight="bold">
-                      {post?.like_count?.toLocaleString()} Likes
+                      {postLikes?.toLocaleString() ||
+                        post?.like_count?.toLocaleString()}{" "}
+                      likes
                     </Text>
                   </Box>
                 </Box>
@@ -293,6 +396,33 @@ const PostPageDetails = ({ post, Comments }) => {
                 >
                   View mores...
                 </Text>
+
+                {viewComment ? (
+                  <FormControl
+                    position="fixed"
+                    bottom="36"
+                    width="80"
+                    mt="3"
+                    ml="2"
+                    isInvalid={formik.errors.content}
+                  >
+                    <FormHelperText>{formik.errors.content}</FormHelperText>
+                    <Flex>
+                      <Input
+                        mr="2"
+                        width="80"
+                        onChange={(event) =>
+                          formik.setFieldValue("content", event.target.value)
+                        }
+                        value={formik.values.content}
+                        placeholder={"Add a comment ..."}
+                      />
+                      <Button onClick={formik.handleSubmit} colorScheme="green">
+                        Send
+                      </Button>
+                    </Flex>
+                  </FormControl>
+                ) : null}
               </Box>
             </Flex>
           </Container>
@@ -305,10 +435,15 @@ const PostPageDetails = ({ post, Comments }) => {
 export async function getServerSideProps(context) {
   const { id } = context.params;
   const { auth_token } = context.req.cookies;
+  const limitComment = 5;
 
   const res = await axios.get(`http://localhost:2020/posts/${id}`, {
     headers: {
       Authorization: auth_token,
+    },
+    params: {
+      _page: 1,
+      _limit: limitComment,
     },
   });
 
