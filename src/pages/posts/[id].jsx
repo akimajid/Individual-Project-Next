@@ -166,7 +166,7 @@ const PostPageDetails = ({ post, Comments }) => {
 
       setLikePost(true);
       fetchLike();
-      refreshPage()
+      router.push(`/posts/` + post?.id)
     } catch (error) {
       toast({
         title: "Can't Reach Like Server",
@@ -184,7 +184,7 @@ const PostPageDetails = ({ post, Comments }) => {
 
       setLikePost(false);
       fetchLike();
-      refreshPage()
+      router.push(`/posts/` + post?.id)
     } catch (error) {
       toast({
         title: "Can't Reach Like Server",

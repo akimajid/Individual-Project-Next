@@ -33,27 +33,27 @@ const ContentCard = ({
 }) => {
   const router = useRouter();
 
-  const renderComment = () => {
-    return Comments.map((val) => {
-      return (
-        <Box display="flex" marginLeft="1" marginRight="2" marginTop="1">
-          <Text lineHeight="4">
-            <b>{val?.User?.username} </b>
-            {val?.content}{" "}
-            <span
-              style={{
-                fontSize: "small",
-                color: "gray",
-                fontWeight: "lighter",
-              }}
-            >
-              {`(${moment(val?.createdAt).format("MMMM, DD")})`}
-            </span>
-          </Text>
-        </Box>
-      );
-    });
-  };
+  // const renderComment = () => {
+  //   return Comments.map((val) => {
+  //     return (
+  //       <Box display="flex" marginLeft="1" marginRight="2" marginTop="1">
+  //         <Text lineHeight="4">
+  //           <b>{val?.User?.username} </b>
+  //           {val?.content}{" "}
+  //           <span
+  //             style={{
+  //               fontSize: "small",
+  //               color: "gray",
+  //               fontWeight: "lighter",
+  //             }}
+  //           >
+  //             {`(${moment(val?.createdAt).format("MMMM, DD")})`}
+  //           </span>
+  //         </Text>
+  //       </Box>
+  //     );
+  //   });
+  // };
 
   return (
     <Container
@@ -114,8 +114,9 @@ const ContentCard = ({
         <Image padding="1" src={image_url} />
       </AspectRatio>
 
-      <Box marginTop="2">
+      {/* <Box marginTop="2">
         <Icon
+          onClick={() => router.push(`/posts/${postId}`)}
           boxSize={6}
           as={FaRegHeart}
           sx={{
@@ -137,7 +138,7 @@ const ContentCard = ({
             },
           }}
         />
-      </Box>
+      </Box> */}
 
       <Box>
         <Text paddingLeft="1" fontWeight="bold">
@@ -157,7 +158,20 @@ const ContentCard = ({
         <Text display="inline">{caption}</Text>
       </Box>
 
-      <Box>{renderComment()}</Box>
+      {/* <Box>{renderComment()}</Box> */}
+
+      <Box
+      onClick={() => router.push(`/posts/${postId}`)} 
+      fontSize="sm" 
+      color="GrayText" 
+      ml="1" 
+      mt="1"
+      sx={{
+        cursor: "pointer"
+      }}
+      >
+        Views details...
+      </Box>
 
       <Box paddingLeft="1">
         <Text mt="1" fontSize="smaller" color="gray">
