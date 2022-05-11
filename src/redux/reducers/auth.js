@@ -8,6 +8,7 @@ const init_state = {
   profile_picture: "",
   bio: "",
   errorMsg: "",
+  is_verified: false
 };
 
 export const auth_reducer = (state = init_state, action) => {
@@ -20,6 +21,7 @@ export const auth_reducer = (state = init_state, action) => {
       profile_picture: action.payload.profile_picture,
       bio: action.payload.bio,
       id: action.payload.id,
+      is_verified: action.payload.is_verified,
       posts: 0,
       errorMsg: "",
     };

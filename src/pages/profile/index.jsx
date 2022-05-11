@@ -180,7 +180,7 @@ const Profile = () => {
                   cursor="pointer"
                   onClick={() => resendVerifiedEmail()}
                 >
-                  verifiy Account
+                  Verifiy account
                 </Button>
               </Flex>
             </Flex>
