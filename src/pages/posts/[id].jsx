@@ -20,14 +20,23 @@ import {
   FormHelperText,
   Input,
   Button,
+  IconButton
 } from "@chakra-ui/react";
+import {
+  WhatsappShareButton,
+  WhatsappIcon,
+  TwitterIcon,
+  TwitterShareButton,
+  FacebookIcon,
+  FacebookShareButton,
+} from "react-share";
 import api from "../../lib/api";
-import ContentCard from "../../component/ContentCard";
 import axios from "axios";
 import Page from "../../component/Page";
 import { FaRegHeart, FaRegComment, FaHeart } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
+import { BiLink } from "react-icons/bi";
 import moment from "moment";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -166,7 +175,7 @@ const PostPageDetails = ({ post, Comments }) => {
 
       setLikePost(true);
       fetchLike();
-      router.push(`/posts/` + post?.id)
+      router.push(`/posts/` + post?.id);
     } catch (error) {
       toast({
         title: "Can't Reach Like Server",
@@ -184,7 +193,7 @@ const PostPageDetails = ({ post, Comments }) => {
 
       setLikePost(false);
       fetchLike();
-      router.push(`/posts/` + post?.id)
+      router.push(`/posts/` + post?.id);
     } catch (error) {
       toast({
         title: "Can't Reach Like Server",
@@ -226,6 +235,18 @@ const PostPageDetails = ({ post, Comments }) => {
     });
   };
 
+  const webUrl = `https://localhost:3000`;
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(`${webUrl}${router.asPath}`);
+
+    toast({
+      position: "top-left",
+      status: "success",
+      title: "Link copied",
+    });
+  };
+
   useEffect(() => {
     fetchComments();
 
@@ -235,7 +256,12 @@ const PostPageDetails = ({ post, Comments }) => {
   return (
     <>
       <Navbar />
-      <Page title={`${post?.User?.username} post`}>
+      <Page
+        title={`${post?.User?.username} post`}
+        description={post.caption}
+        image={post.image_url}
+        url={`${webUrl}${router.asPath}`}
+      >
         <Center bgGradient="linear(to-r, gray.200, gray.400)">
           <Container
             bgColor="white"
@@ -382,6 +408,32 @@ const PostPageDetails = ({ post, Comments }) => {
                 </Box>
 
                 <Divider ml="2" />
+
+                <Flex ml="3" mt="1">
+                  <WhatsappShareButton
+                    url={`${webUrl}${router.asPath}`}
+                    title={`${post?.User?.username}'s Post`}
+                  >
+                    <WhatsappIcon size="40" round />
+                  </WhatsappShareButton>
+                  <TwitterShareButton
+                    url={`${webUrl}${router.asPath}`}
+                    title={`${post?.User?.username}'s Post`}
+                  >
+                    <TwitterIcon size="40" round />
+                  </TwitterShareButton>
+                  <FacebookShareButton
+                    url={`${webUrl}${router.asPath}`}
+                    quote={`${post?.User?.username}'s Post`}
+                  >
+                    <FacebookIcon size="40" round />
+                  </FacebookShareButton>
+                  <IconButton
+                    onClick={copyLink}
+                    borderRadius="50%"
+                    icon={<Icon as={BiLink} />}
+                  />
+                </Flex>
 
                 <Text>{renderComment()}</Text>
 
