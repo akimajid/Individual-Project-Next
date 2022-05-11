@@ -142,7 +142,7 @@ const Login = () => {
                 </Link  > 
               </Text>
 
-              <Link textAlign="center" color="blue.300">
+              <Link textAlign="center" color="blue.300" onClick={() => router.push("/auth/request-reset-password")}>
                 Forget password?
               </Link>
 
