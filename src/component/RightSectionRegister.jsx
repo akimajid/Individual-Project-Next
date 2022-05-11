@@ -29,6 +29,8 @@ const RightSectionRegister = () => {
 
   const router = useRouter();
 
+  const toast = useToast()
+
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -53,16 +55,35 @@ const RightSectionRegister = () => {
     }),
     validateOnChange: false,
     onSubmit: (values) => {
-      if (values.password === values.repeat_password) {
-        delete values.repeat_password;
+      setTimeout(async () => {
+        if (values.password === values.repeat_password) {
+          delete values.repeat_password;
+        } else {
+          return;
+        }
+        try {
+          const res = await api.post("/auth/register", values);
 
-        api.post("/auth/register", values);
-        router.push("/auth/login");
-      } else {
-        return
-      }
+          if (res.data.message !== undefined) {
+            toast({
+              position: "top",
+              title: "Account created.",
+              description: `${res.data.message} check your email for verify your new account `,
+              status: "success",
+              duration: 2000,
+              isClosable: true,
+            });
+          }
+          formik.setSubmitting(false);
+
+          router.push("/auth/login");
+        } catch (err) {
+          console.log(err);
+          formik.setSubmitting(false);
+        }
+      }, 2000);
     },
-  }, 2000);
+  });
 
   useEffect(() => {
     if (authSelector.id) {
