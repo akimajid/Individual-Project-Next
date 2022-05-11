@@ -21,6 +21,7 @@ export const userLogin = (values, setSubmitting) => {
       setSubmitting(false);
     } catch (err) {
       console.log(err);
+      alert("Username or password wrong")
       dispatch({
         type: network_type.NETWORK_ERROR,
         payload: {

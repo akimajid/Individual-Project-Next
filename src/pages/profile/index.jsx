@@ -11,6 +11,7 @@ import {
   Input,
   Stack,
   Textarea,
+  useToast
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useRef, useState } from "react";
@@ -30,6 +31,8 @@ const Profile = () => {
 
   const [edit, setEdit] = useState();
   const [editPic, setEditPic] = useState();
+
+  const toast = useToast()
 
   const refreshPage = () => {
     window.location.reload();
@@ -107,12 +110,10 @@ const Profile = () => {
           ? formik.values.full_name
           : authSelector.full_name,
       };
-      console.log(updateData);
 
       const res = await api.patch("/users/profile", updateData);
       const data = res.data.result;
 
-      console.log(data);
       const stringifyData = JSON.stringify(data);
 
       jsCookie.remove("user_data");
@@ -129,6 +130,20 @@ const Profile = () => {
       }
 
       setEdit(!edit);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const resendVerifiedEmail = async () => {
+    try {
+      await api.post("/auth/resend-verification");
+      toast({
+        position: "top-right",
+        status: "success",
+        description: "Resend verification success",
+        title: "Verification"
+      })
     } catch (err) {
       console.log(err);
     }
@@ -157,6 +172,17 @@ const Profile = () => {
               >
                 User profile
               </Heading>
+              <Flex hidden={authSelector.is_verified} justify={"center"}>
+                <Button
+                  m="4"
+                  size="xs"
+                  colorScheme="yellow"
+                  cursor="pointer"
+                  onClick={() => resendVerifiedEmail()}
+                >
+                  verifiy Account
+                </Button>
+              </Flex>
             </Flex>
             <Flex mt="5" justify="center">
               <Avatar size="xl" src={authSelector.profile_picture}></Avatar>

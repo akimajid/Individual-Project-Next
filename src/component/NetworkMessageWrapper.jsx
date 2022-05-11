@@ -8,15 +8,15 @@ const NetworkMessageWrapper = ({ children }) => {
   const toast = useToast();
 
   useEffect(() => {
-    if (networkSelector.errorMsg) {
+    if (networkSelector.errorMessage) {
       toast({
         position: "top",
         title: networkSelector.errorTitle,
-        description: networkSelector.errorMsg,
+        description: networkSelector.errorMessage,
         duration: 2000,
       });
     }
-  }, [networkSelector.errorMsg]);
+  }, [networkSelector.errorMessage]);
 
   return children;
 };

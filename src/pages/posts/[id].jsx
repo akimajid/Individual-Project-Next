@@ -105,7 +105,6 @@ const PostPageDetails = ({ post, Comments }) => {
           description: "Connect The Server",
           status: "error",
           duration: 2000,
-
           position: "top",
         });
       }
@@ -121,6 +120,8 @@ const PostPageDetails = ({ post, Comments }) => {
         params: {
           _page: page,
           _limit: maxComments,
+          _sortBy: "createdAt",
+          _sortDir: "DESC",
         },
       });
 
